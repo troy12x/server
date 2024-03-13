@@ -3,7 +3,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(bodyParser.json());
@@ -11,8 +11,11 @@ app.use(bodyParser.json());
 // Define API user key
 const rapidAPIKey = '126e2cd957mshbd5ead3a2e18a5ap10fe39jsn8e82fd0268a2';
 
-// POST endpoint to fetch organization data
-app.post('/api/organizations', async (req, res) => {
+// Cache data to reduce fetch time
+let cachedData;
+
+// Fetch organization data
+const fetchOrganizationData = async () => {
     try {
         const options = {
             method: 'POST',
@@ -57,9 +60,29 @@ app.post('/api/organizations', async (req, res) => {
         };
         
         const response = await axios.request(options);
-        res.json(response.data);
+        return response.data;
     } catch (error) {
         console.error(error);
+        throw error;
+    }
+};
+
+// Cache organization data
+const cacheOrganizationData = async () => {
+    cachedData = await fetchOrganizationData();
+};
+
+// Endpoint to retrieve organization data
+app.get('/api/organizations', async (req, res) => {
+    try {
+        // Check if data is already cached
+        if (!cachedData) {
+            // If not cached, fetch and cache data
+            await cacheOrganizationData();
+        }
+        // Return cached data
+        res.json(cachedData);
+    } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });

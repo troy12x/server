@@ -72,6 +72,7 @@ const cacheOrganizationData = async () => {
     cachedData = await fetchOrganizationData();
 };
 
+
 // Endpoint to retrieve organization data
 app.get('/api/organizations', async (req, res) => {
     try {

@@ -1,7 +1,7 @@
 {
     "functions": {
       "api/server.js": {
-        "runtime": "now-node@20.11.1"
+        "runtime": "now-node@16.9.1"
       }
     }
   }

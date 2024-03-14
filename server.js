@@ -1,4 +1,8 @@
+const express = require('express');
 const axios = require('axios');
+
+const app = express();
+const PORT = process.env.PORT || 3001; // Use the provided port or default to 3000
 
 // Define API user key
 const rapidAPIKey = '126e2cd957mshbd5ead3a2e18a5ap10fe39jsn8e82fd0268a2';
@@ -54,18 +58,23 @@ const fetchOrganizationData = async () => {
         const response = await axios.request(options);
         return response.data;
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching organization data:', error.message);
         throw error;
     }
 };
 
 // Cache organization data
 const cacheOrganizationData = async () => {
-    cachedData = await fetchOrganizationData();
+    try {
+        cachedData = await fetchOrganizationData();
+        console.log('Organization data cached successfully.');
+    } catch (error) {
+        console.error('Error caching organization data:', error.message);
+    }
 };
 
 // Endpoint to retrieve organization data
-module.exports = async (req, res) => {
+app.get('/api/organizations', async (req, res) => {
     try {
         // Check if data is already cached
         if (!cachedData) {
@@ -77,4 +86,9 @@ module.exports = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
-};
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

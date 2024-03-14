@@ -1,8 +1,7 @@
 {
-    "functions": {
-      "api/server.js": {
-        "runtime": "nodejs"
-      }
-    }
+    "outputDirectory": "",
+    "routes": [
+        { "src": "/api/organizations", "dest": "/server.js" }
+      ]
   }
   

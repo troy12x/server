@@ -1,8 +1,12 @@
 const express = require('express');
 const axios = require('axios');
+const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT || 3001; // Use the provided port or default to 3000
+const PORT = process.env.PORT || 3001; // Use the provided port or default to 3001
+
+// Middleware
+app.use(bodyParser.json());
 
 // Define API user key
 const rapidAPIKey = '126e2cd957mshbd5ead3a2e18a5ap10fe39jsn8e82fd0268a2';
@@ -89,6 +93,12 @@ app.get('/api/organizations', async (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, async () => {
+    try {
+        // Cache organization data on server start
+        await cacheOrganizationData();
+        console.log(`Server is running on port ${PORT}`);
+    } catch (error) {
+        console.error('Error caching organization data on server start:', error.message);
+    }
 });

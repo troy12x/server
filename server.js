@@ -4,8 +4,8 @@ const axios = require('axios');
 const rapidAPIKey = '126e2cd957mshbd5ead3a2e18a5ap10fe39jsn8e82fd0268a2';
 
 // Cache data to reduce fetch time
-let cachedData;
 
+let cachedData;
 // Fetch organization data
 const fetchOrganizationData = async () => {
     try {

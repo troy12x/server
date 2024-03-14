@@ -1,8 +1,7 @@
 {
     "functions": {
       "api": {
-        "runtime": "now-node@20.11.1",
-        "includeFiles": "api/server.js"
+        "runtime": "now-node"
       }
     }
   }

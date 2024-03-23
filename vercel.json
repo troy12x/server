@@ -1,7 +1,0 @@
-{
-    "outputDirectory": "",
-    "routes": [
-        { "src": "/api/organizations", "dest": "/server.js" }
-      ]
-  }
-  
